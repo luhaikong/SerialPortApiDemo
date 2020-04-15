@@ -58,6 +58,7 @@ public class SerialPort {
 			}
 		}
 
+		// 开启串口，传入物理地址、波特率、flags值
 		mFd = open(device.getAbsolutePath(), baudrate, flags);
 		if (mFd == null) {
 			Log.e(TAG, "native open returns null");
@@ -67,19 +68,22 @@ public class SerialPort {
 		mFileOutputStream = new FileOutputStream(mFd);
 	}
 
-	// Getters and setters
+	// 获取串口的输入流
 	public InputStream getInputStream() {
 		return mFileInputStream;
 	}
 
+	// 获取串口的输出流
 	public OutputStream getOutputStream() {
 		return mFileOutputStream;
 	}
 
-	// JNI
+	// JNI调用，开启串口
 	private native static FileDescriptor open(String path, int baudrate, int flags);
+	// 关闭串口
 	public native void close();
 	static {
+		// 加载库文件.so文件
 		System.loadLibrary("serial_port");
 	}
 }
